@@ -2,6 +2,11 @@ ifndef CROSS_PREFIXE
 CROSS_PREFIX =arm-none-eabi-
 endif
 
+
+ifndef PROJECT
+PROJECT=usart
+endif
+
 CC=$(CROSS_PREFIX)gcc
 LD=$(CROSS_PREFIX)ld
 AR=$(CROSS_PREFIX)ar
@@ -17,12 +22,12 @@ CFLAGS+= -I./STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/CoreSupport
 CFLAGS+= -I./STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x
 CFLAGS+= -I./
 
-SRC=startup_stm32f10x_hd_vl.o $(wildcard *.c) $(wildcard ./STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/*.c) $(wildcard ././STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/CoreSupport/*.c) 
+SRC=$(wildcard *.s) $(wildcard *.c) $(wildcard ./STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/*.c) $(wildcard ././STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/CoreSupport/*.c) 
 
 OBJ1_SRC=$(patsubst %.c,%.o,$(SRC))
 OBJ_SRC=$(patsubst %.s,%.o,$(OBJ1_SRC))
 LDOBJ_SRC=$(addprefix ./objs/,$(OBJ_SRC))
-PROJECT=usart
+
 
 all: $(PROJECT).bin
 
