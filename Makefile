@@ -48,3 +48,5 @@ $(PROJECT).axf:$(OBJ_SRC)
 clean:
 	-rm -rf $(LDOBJ_SRC)
 	-rm -rf $(PROJECT).axf $(PROJECT).bin
+burn:$(PROJECT).bin
+	sudo stm32flash -w $(PROJECT).bin /dev/ttyUSB0
