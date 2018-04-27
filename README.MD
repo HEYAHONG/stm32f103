@@ -8,3 +8,5 @@ STM32F10x_StdPeriph_Lib_V3.5.0：官方下载的库
 stm32_rom.ld:链接需要的脚本文件，可根据芯片实际情况修改
 
 startup_stm32f10x_hd_vl.s：启动C语言的汇编文件
+
+toolchain:包含一些可在开发过程中用到的工具
