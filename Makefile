@@ -11,10 +11,12 @@ CC=$(CROSS_PREFIX)gcc
 LD=$(CROSS_PREFIX)ld
 AR=$(CROSS_PREFIX)ar
 OBJCOPY =  $(CORSS_PREFIX)objcopy
+SIZE=$(CROSS_PREFIX)size
 
 
 CFLAGS=  -nostdlib  -mcpu=cortex-m3 -mthumb -ffunction-sections -fdata-sections
-LDFLAGS= -EL -e Reset_Handler -T stm32_rom.ld 
+LDFLAGS=   -EL -e Reset_Handler -T stm32_rom.ld 
+OBJCOPYFLAGS=  -I elf32-little  -O binary 
 
 #use std_periph_driver
 CFLAGS+= -I./STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD 
@@ -34,9 +36,10 @@ all: $(PROJECT).bin
 
 $(PROJECT).axf:$(OBJ_SRC)
 	$(LD) $(LDFLAGS)  $(LDOBJ_SRC) -o $@
+	$(SIZE) $@
 
 %.bin:%.axf
-	$(OBJCOPY) -I elf32-little  -O binary $^ $@
+	$(OBJCOPY) $(OBJCOPYFLAGS) $^ $@
 
 %.o:%.c
 	$(CC) $(CFLAGS) -c  $^ -o ./objs/$@
