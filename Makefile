@@ -16,7 +16,7 @@ SIZE=$(CROSS_PREFIX)size
 
 CFLAGS=  -nostdlib  -mcpu=cortex-m3 -mthumb -ffunction-sections -fdata-sections
 LDFLAGS=   -EL -e Reset_Handler -T stm32_rom.ld 
-OBJCOPYFLAGS=  -I elf32-little  -O binary 
+OBJCOPYFLAGS= -I elf32-little   -O binary 
 
 #use std_periph_driver
 CFLAGS+= -I./STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD 
@@ -34,11 +34,11 @@ LDOBJ_SRC=$(addprefix ./objs/,$(OBJ_SRC))
 all: $(PROJECT).bin
 
 
-$(PROJECT).axf:$(OBJ_SRC)
+$(PROJECT).elf:$(OBJ_SRC)
 	$(LD) $(LDFLAGS)  $(LDOBJ_SRC) -o $@
 	$(SIZE) $@
 
-%.bin:%.axf
+%.bin:%.elf
 	$(OBJCOPY) $(OBJCOPYFLAGS) $^ $@
 
 %.o:%.c
@@ -47,6 +47,6 @@ $(PROJECT).axf:$(OBJ_SRC)
 	$(CC) $(CFLAGS) -c  $^ -o ./objs/$@
 clean:
 	-rm -rf $(LDOBJ_SRC)
-	-rm -rf $(PROJECT).axf $(PROJECT).bin
+	-rm -rf $(PROJECT).elf $(PROJECT).bin
 burn:$(PROJECT).bin
 	sudo stm32flash -w $(PROJECT).bin /dev/ttyUSB0
